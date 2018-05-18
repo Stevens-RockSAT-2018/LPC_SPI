@@ -481,9 +481,8 @@ int main(void)
 #endif
 	while(1){
 		uint32_t readBack = ADC_read(0);
-		printf(readBack >> 16+ " " + readBack & 0x03FF + " ");
+		printf(readBack >> 16+ " " + readBack & 0x03FF + "\n");
 		delay_msec(1000);
-
 	}
 	appSSPMainMenu();
 	return 0;
