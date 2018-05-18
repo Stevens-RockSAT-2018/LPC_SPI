@@ -454,7 +454,7 @@ int main(void)
 	Board_SSP_Init(LPC_SSP);
 
 	Chip_SSP_Init(LPC_SSP);
-	Chip_SSP_SetBitRate(LPC_SSP, 10000000);
+	Chip_SSP_SetBitRate(LPC_SSP, 9000000);
 
 	ssp_format.frameFormat = SSP_FRAMEFORMAT_SPI;
 	ssp_format.bits = SSP_DATA_BITS;
@@ -482,7 +482,7 @@ int main(void)
 	while(1){
 		uint32_t readBack = ADC_read(0);
 		printf("%d %d \r\n", readBack >> 16, readBack & 0x03FF);
-		delay_msec(1000);
+		delay_msec(10);
 	}
 	appSSPMainMenu();
 	return 0;
