@@ -82,6 +82,7 @@
 #define CSPIN_ADC5		9
 #define CSPIN_ADC6		10
 
+#define TICKRATE_HZ (1000) /* 1000 ticks per second */
 
 
 /* Tx buffer */
@@ -132,6 +133,20 @@ static char sspSelectModeMenu[] = "\n\rPress 1-2 to select or 'q' to exit:\n\r"
 /*****************************************************************************
  * Private functions
  ****************************************************************************/
+
+/**
+ * @brief	Handle interrupt from SysTick timer
+ * @return	Nothing
+ */
+static uint32_t tick_ct = 0;
+void SysTick_Handler(void)
+{
+	tick_ct += 1;
+//	if ((tick_ct % 50) == 0) {
+//		Board_LED_Toggle(0);
+//	}
+}
+
 
 /* Initialize buffer */
 static void Buffer_Init(void)
@@ -411,8 +426,16 @@ uint32_t ADC_read(uint8_t cs_pin_sel){
 }
 
 void set_cspins(){
-	for(int i = 0; i < 5; ++i){
+	for (int i = 0; i < 5; ++i) {
 		Chip_GPIO_SetPinOutHigh(LPC_GPIO_PORT, 1, cs_pin[i]);
+	}
+}
+
+void delay_msec(uint32_t mills) {
+	uint32_t start = tick_ct;
+	uint32_t stop = tick_ct + mills; // fix if changing systick
+	while (tick_ct < stop) {
+		__WFI();
 	}
 }
 
@@ -420,6 +443,10 @@ int main(void)
 {
 	SystemCoreClockUpdate();
 	Board_Init();
+
+	/* Enable and setup SysTick Timer at a periodic rate */
+	SysTick_Config(SystemCoreClock / TICKRATE_HZ);
+
 
 	Chip_GPIO_Init(LPC_GPIO_PORT);
 //	set_cspins();
@@ -455,10 +482,8 @@ int main(void)
 	while(1){
 		uint32_t readBack = ADC_read(0);
 		printf(readBack >> 16+ " " + readBack & 0x03FF + " ");
-		for (int i = 0; i < 10000000; i++) {
-			i += 1;
-			i -= 1;
-		}
+		delay_msec(1000);
+
 	}
 	appSSPMainMenu();
 	return 0;
