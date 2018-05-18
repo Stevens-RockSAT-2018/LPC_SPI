@@ -454,7 +454,10 @@ int main(void)
 #endif
 	while(1){
 		uint32_t readBack = ADC_read(0);
-		printf(readBack >> 16+ " " + readBack & 0x03FF + "\n");
+		printf(readBack >> 16);
+		printf(" ");
+		printf(readBack & 0x03FF);
+		printf("\n");
 		for (int i = 0; i < 10000000; i++) {
 			i += 1;
 			i -= 1;
