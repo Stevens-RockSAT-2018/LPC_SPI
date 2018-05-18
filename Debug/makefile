@@ -23,25 +23,25 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: periph_ssp.axf
+all: LPC_SPI.axf
 
 # Tool invocations
-periph_ssp.axf: $(OBJS) $(USER_OBJS)
+LPC_SPI.axf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MCU Linker'
-	arm-none-eabi-gcc -nostdlib -L"C:\Users\zachs\Documents\New folder 2\lpc_chip_43xx\Debug" -L"C:\Users\zachs\Documents\New folder 2\lpc_board_nxp_lpcxpresso_4337\Debug" -Xlinker -Map="periph_ssp.map" -Xlinker --gc-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb -T "periph_ssp_Debug.ld" -o "periph_ssp.axf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -nostdlib -L"/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/Debug" -L"/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_board_nxp_lpcxpresso_4337/Debug" -Xlinker -Map="LPC_SPI.map" -Xlinker --gc-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb -T "periph_ssp_Debug.ld" -o "LPC_SPI.axf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build
 
 # Other Targets
 clean:
-	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS) periph_ssp.axf
+	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS) LPC_SPI.axf
 	-@echo ' '
 
 post-build:
 	-@echo 'Performing post-build steps'
-	-arm-none-eabi-size "periph_ssp.axf"; # arm-none-eabi-objcopy -v -O binary "periph_ssp.axf" "periph_ssp.bin" ; # checksum -p LPC4337 -d "periph_ssp.bin";
+	-arm-none-eabi-size "LPC_SPI.axf"; # arm-none-eabi-objcopy -v -O binary "LPC_SPI.axf" "LPC_SPI.bin" ; # checksum -p LPC4337 -d "LPC_SPI.bin";
 	-@echo ' '
 
 .PHONY: all clean dependents

@@ -393,11 +393,21 @@ void DMA_IRQHandler(void)
  * @return	Nothing
  */
 uint32_t ADC_read(uint8_t cs_pin_sel){
-	Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT, 1, cs_pin[cs_pin_sel]);
+	xf_setup.length = 4;
+	xf_setup.tx_data = Tx_Buf;
+	xf_setup.rx_data = Rx_Buf;
+	xf_setup.rx_cnt = xf_setup.tx_cnt = 0;
+
+//	Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT, 1, cs_pin[cs_pin_sel]);
 	Tx_Buf[0] = SETUP_FLAG | 1 << 3 | SCAN_MODE_0_N;
+	Tx_Buf[1] = 0;
+	Tx_Buf[2] = 0;
+	Tx_Buf[3] = 0;
+
 	uint32_t data = Chip_SSP_RWFrames_Blocking(LPC_SSP, &xf_setup);
-	Chip_GPIO_SetPinOutHigh(LPC_GPIO_PORT, 1, cs_pin[cs_pin_sel]);
-	return data;
+//	Chip_GPIO_SetPinOutHigh(LPC_GPIO_PORT, 1, cs_pin[cs_pin_sel]);
+	uint8_t *rxbuf = xf_setup.rx_data;
+	return rxbuf[0] << 24 | rxbuf[1] << 16 | rxbuf[2] << 8 | rxbuf[3];
 }
 
 void set_cspins(){
@@ -412,7 +422,7 @@ int main(void)
 	Board_Init();
 
 	Chip_GPIO_Init(LPC_GPIO_PORT);
-	set_cspins();
+//	set_cspins();
 	/* SSP initialization */
 	Board_SSP_Init(LPC_SSP);
 
@@ -444,7 +454,11 @@ int main(void)
 #endif
 	while(1){
 		uint32_t readBack = ADC_read(0);
-		printf("Current readout: %d", readBack);
+		printf("Current readout: %d\n\r", readBack);
+		for (int i = 0; i < 10000000; i++) {
+			i += 1;
+			i -= 1;
+		}
 	}
 	appSSPMainMenu();
 	return 0;
