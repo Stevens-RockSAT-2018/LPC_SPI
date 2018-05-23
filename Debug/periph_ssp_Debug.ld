@@ -5,7 +5,7 @@
  * Generated linker script file for LPC4337
  * Created from linkscript.ldt by FMCreateLinkLibraries
  * Using Freemarker v2.3.23
- * MCUXpresso IDE v10.1.1 [Build 606] [2018-01-02] on May 18, 2018 12:55:43 AM
+ * MCUXpresso IDE v10.1.1 [Build 606] [2018-01-02] on May 22, 2018 11:29:28 PM
  */
 
 INCLUDE "periph_ssp_Debug_library.ld"

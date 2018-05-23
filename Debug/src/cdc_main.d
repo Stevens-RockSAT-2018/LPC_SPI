@@ -1,4 +1,4 @@
-src/ssp.o src/ssp.d: ../src/ssp.c \
+src/cdc_main.o src/cdc_main.d: ../src/cdc_main.c \
  /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_board_nxp_lpcxpresso_4337/inc/board.h \
  /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/chip.h \
  /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/config_43xx/sys_config.h \

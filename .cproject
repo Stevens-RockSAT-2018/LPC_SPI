@@ -22,9 +22,9 @@
 							<builder buildPath="${workspace_loc:/periph_ssp}/Debug" id="com.crt.advproject.builder.exe.debug.1058490058" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="com.crt.advproject.builder.exe.debug"/>
 							<tool id="com.crt.advproject.cpp.exe.debug.1407728543" name="MCU C++ Compiler" superClass="com.crt.advproject.cpp.exe.debug"/>
 							<tool id="com.crt.advproject.gcc.exe.debug.824169405" name="MCU C Compiler" superClass="com.crt.advproject.gcc.exe.debug">
-								<option id="com.crt.advproject.gcc.arch.209248432" name="Architecture" superClass="com.crt.advproject.gcc.arch" value="com.crt.advproject.gcc.target.cm4" valueType="enumerated"/>
-								<option id="com.crt.advproject.gcc.thumb.332024144" name="Thumb mode" superClass="com.crt.advproject.gcc.thumb" value="true" valueType="boolean"/>
-								<option id="gnu.c.compiler.option.preprocessor.def.symbols.22778634" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
+								<option id="com.crt.advproject.gcc.arch.209248432" name="Architecture" superClass="com.crt.advproject.gcc.arch" useByScannerDiscovery="false" value="com.crt.advproject.gcc.target.cm4" valueType="enumerated"/>
+								<option id="com.crt.advproject.gcc.thumb.332024144" name="Thumb mode" superClass="com.crt.advproject.gcc.thumb" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="gnu.c.compiler.option.preprocessor.def.symbols.22778634" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__MULTICORE_NONE"/>
 									<listOptionValue builtIn="false" value="DEBUG"/>
 									<listOptionValue builtIn="false" value="__CODE_RED"/>
@@ -32,49 +32,52 @@
 									<listOptionValue builtIn="false" value="__REDLIB__"/>
 									<listOptionValue builtIn="false" value="CORE_M4"/>
 								</option>
-								<option id="gnu.c.compiler.option.misc.other.335769596" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -fsingle-precision-constant" valueType="string"/>
-								<option id="com.crt.advproject.gcc.hdrlib.1426480035" superClass="com.crt.advproject.gcc.hdrlib" value="Redlib" valueType="enumerated"/>
-								<option id="gnu.c.compiler.option.include.paths.985798596" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+								<option id="gnu.c.compiler.option.misc.other.335769596" name="Other flags" superClass="gnu.c.compiler.option.misc.other" useByScannerDiscovery="false" value="-c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -fsingle-precision-constant" valueType="string"/>
+								<option id="com.crt.advproject.gcc.hdrlib.1426480035" name="Library headers" superClass="com.crt.advproject.gcc.hdrlib" useByScannerDiscovery="false" value="Redlib" valueType="enumerated"/>
+								<option id="gnu.c.compiler.option.include.paths.985798596" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_43xx/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_43xx/inc/usbd_rom}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_43xx/inc/config_43xx}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_board_nxp_lpcxpresso_4337/inc}&quot;"/>
 								</option>
-								<option id="com.crt.advproject.gcc.fpu.2047653766" superClass="com.crt.advproject.gcc.fpu" value="com.crt.advproject.gcc.fpu.fpv4" valueType="enumerated"/>
+								<option id="com.crt.advproject.gcc.fpu.2047653766" name="Floating point" superClass="com.crt.advproject.gcc.fpu" useByScannerDiscovery="false" value="com.crt.advproject.gcc.fpu.fpv4" valueType="enumerated"/>
 								<inputType id="com.crt.advproject.compiler.input.1463811869" superClass="com.crt.advproject.compiler.input"/>
 							</tool>
 							<tool id="com.crt.advproject.gas.exe.debug.1026816364" name="MCU Assembler" superClass="com.crt.advproject.gas.exe.debug">
-								<option id="com.crt.advproject.gas.arch.1231215216" name="Architecture" superClass="com.crt.advproject.gas.arch" value="com.crt.advproject.gas.target.cm4" valueType="enumerated"/>
-								<option id="com.crt.advproject.gas.thumb.1482088775" name="Thumb mode" superClass="com.crt.advproject.gas.thumb" value="true" valueType="boolean"/>
-								<option id="gnu.both.asm.option.flags.crt.786398130" name="Assembler flags" superClass="gnu.both.asm.option.flags.crt" value="-c -x assembler-with-cpp -D__MULTICORE_NONE -DDEBUG -D__CODE_RED -D__REDLIB__" valueType="string"/>
-								<option id="com.crt.advproject.gas.hdrlib.983316938" superClass="com.crt.advproject.gas.hdrlib" value="Redlib" valueType="enumerated"/>
-								<option id="com.crt.advproject.gas.fpu.828665581" superClass="com.crt.advproject.gas.fpu" value="com.crt.advproject.gas.fpu.fpv4" valueType="enumerated"/>
+								<option id="com.crt.advproject.gas.arch.1231215216" name="Architecture" superClass="com.crt.advproject.gas.arch" useByScannerDiscovery="false" value="com.crt.advproject.gas.target.cm4" valueType="enumerated"/>
+								<option id="com.crt.advproject.gas.thumb.1482088775" name="Thumb mode" superClass="com.crt.advproject.gas.thumb" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="gnu.both.asm.option.flags.crt.786398130" name="Assembler flags" superClass="gnu.both.asm.option.flags.crt" useByScannerDiscovery="false" value="-c -x assembler-with-cpp -D__MULTICORE_NONE -DDEBUG -D__CODE_RED -D__REDLIB__" valueType="string"/>
+								<option id="com.crt.advproject.gas.hdrlib.983316938" name="Library headers" superClass="com.crt.advproject.gas.hdrlib" useByScannerDiscovery="false" value="Redlib" valueType="enumerated"/>
+								<option id="com.crt.advproject.gas.fpu.828665581" name="Floating point" superClass="com.crt.advproject.gas.fpu" useByScannerDiscovery="false" value="com.crt.advproject.gas.fpu.fpv4" valueType="enumerated"/>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1180288992" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 								<inputType id="com.crt.advproject.assembler.input.342136031" name="Additional Assembly Source Files" superClass="com.crt.advproject.assembler.input"/>
 							</tool>
 							<tool id="com.crt.advproject.link.cpp.exe.debug.1256358971" name="MCU C++ Linker" superClass="com.crt.advproject.link.cpp.exe.debug"/>
 							<tool id="com.crt.advproject.link.exe.debug.1207201761" name="MCU Linker" superClass="com.crt.advproject.link.exe.debug">
-								<option id="com.crt.advproject.link.gcc.multicore.master.2072033064" name="Multicore master" superClass="com.crt.advproject.link.gcc.multicore.master"/>
-								<option id="com.crt.advproject.link.gcc.multicore.master.userobjs.1370546391" name="Slave Objects (not visible)" superClass="com.crt.advproject.link.gcc.multicore.master.userobjs" valueType="userObjs"/>
-								<option id="com.crt.advproject.link.arch.824801821" name="Architecture" superClass="com.crt.advproject.link.arch" value="com.crt.advproject.link.target.cm4" valueType="enumerated"/>
-								<option id="com.crt.advproject.link.thumb.1330064941" name="Thumb mode" superClass="com.crt.advproject.link.thumb" value="true" valueType="boolean"/>
-								<option id="com.crt.advproject.link.script.1547359262" name="Linker script" superClass="com.crt.advproject.link.script" value="&quot;periph_ssp_Debug.ld&quot;" valueType="string"/>
-								<option id="com.crt.advproject.link.manage.2057117818" name="Manage linker script" superClass="com.crt.advproject.link.manage" value="true" valueType="boolean"/>
-								<option id="gnu.c.link.option.nostdlibs.1184438975" name="No startup or default libs (-nostdlib)" superClass="gnu.c.link.option.nostdlibs" value="true" valueType="boolean"/>
-								<option id="gnu.c.link.option.other.1027160120" name="Other options (-Xlinker [option])" superClass="gnu.c.link.option.other" valueType="stringList">
+								<option id="com.crt.advproject.link.gcc.multicore.master.2072033064" name="Multicore master" superClass="com.crt.advproject.link.gcc.multicore.master" useByScannerDiscovery="false"/>
+								<option id="com.crt.advproject.link.gcc.multicore.master.userobjs.1370546391" name="Slave Objects (not visible)" superClass="com.crt.advproject.link.gcc.multicore.master.userobjs" useByScannerDiscovery="false" valueType="userObjs"/>
+								<option id="com.crt.advproject.link.arch.824801821" name="Architecture" superClass="com.crt.advproject.link.arch" useByScannerDiscovery="false" value="com.crt.advproject.link.target.cm4" valueType="enumerated"/>
+								<option id="com.crt.advproject.link.thumb.1330064941" name="Thumb mode" superClass="com.crt.advproject.link.thumb" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="com.crt.advproject.link.script.1547359262" name="Linker script" superClass="com.crt.advproject.link.script" useByScannerDiscovery="false" value="&quot;periph_ssp_Debug.ld&quot;" valueType="string"/>
+								<option id="com.crt.advproject.link.manage.2057117818" name="Manage linker script" superClass="com.crt.advproject.link.manage" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="gnu.c.link.option.nostdlibs.1184438975" name="No startup or default libs (-nostdlib)" superClass="gnu.c.link.option.nostdlibs" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="gnu.c.link.option.other.1027160120" name="Other options (-Xlinker [option])" superClass="gnu.c.link.option.other" useByScannerDiscovery="false" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Map=&quot;${BuildArtifactFileBaseName}.map&quot;"/>
 									<listOptionValue builtIn="false" value="--gc-sections"/>
 								</option>
-								<option id="com.crt.advproject.link.gcc.hdrlib.1413643648" name="Library" superClass="com.crt.advproject.link.gcc.hdrlib" value="com.crt.advproject.gcc.link.hdrlib.codered.nohost" valueType="enumerated"/>
-								<option id="gnu.c.link.option.libs.1843026888" superClass="gnu.c.link.option.libs" valueType="libs">
+								<option id="com.crt.advproject.link.gcc.hdrlib.1413643648" name="Library" superClass="com.crt.advproject.link.gcc.hdrlib" useByScannerDiscovery="false" value="com.crt.advproject.gcc.link.hdrlib.codered.nohost" valueType="enumerated"/>
+								<option id="gnu.c.link.option.libs.1843026888" name="Libraries (-l)" superClass="gnu.c.link.option.libs" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="lpc_board_nxp_lpcxpresso_4337"/>
 									<listOptionValue builtIn="false" value="lpc_chip_43xx"/>
 								</option>
-								<option id="gnu.c.link.option.paths.1116025680" superClass="gnu.c.link.option.paths" valueType="libPaths">
+								<option id="gnu.c.link.option.paths.1116025680" name="Library search path (-L)" superClass="gnu.c.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_43xx/Debug}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_board_nxp_lpcxpresso_4337/Debug}&quot;"/>
 								</option>
-								<option id="com.crt.advproject.link.fpu.2004303535" superClass="com.crt.advproject.link.fpu" value="com.crt.advproject.link.fpu.fpv4" valueType="enumerated"/>
-								<option id="com.crt.advproject.link.gcc.multicore.slave.1126238615" superClass="com.crt.advproject.link.gcc.multicore.slave"/>
+								<option id="com.crt.advproject.link.fpu.2004303535" name="Floating point" superClass="com.crt.advproject.link.fpu" useByScannerDiscovery="false" value="com.crt.advproject.link.fpu.fpv4" valueType="enumerated"/>
+								<option id="com.crt.advproject.link.gcc.multicore.slave.1126238615" name="Multicore configuration" superClass="com.crt.advproject.link.gcc.multicore.slave" useByScannerDiscovery="false"/>
+								<option id="com.crt.advproject.link.memory.heapAndStack.586468967" name="Heap and Stack options" superClass="com.crt.advproject.link.memory.heapAndStack" useByScannerDiscovery="false" value="&amp;Heap:Default;Post Data;Default&amp;Stack:Default;End;Default" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.357517591" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -121,21 +124,21 @@
 									<listOptionValue builtIn="false" value="CORE_M4"/>
 								</option>
 								<option id="gnu.c.compiler.option.misc.other.100104455" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -fsingle-precision-constant" valueType="string"/>
-								<option id="com.crt.advproject.gcc.hdrlib.728743860" superClass="com.crt.advproject.gcc.hdrlib" value="Redlib" valueType="enumerated"/>
-								<option id="gnu.c.compiler.option.include.paths.1282049067" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+								<option id="com.crt.advproject.gcc.hdrlib.728743860" name="Library headers" superClass="com.crt.advproject.gcc.hdrlib" value="Redlib" valueType="enumerated"/>
+								<option id="gnu.c.compiler.option.include.paths.1282049067" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_43xx/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_43xx/inc/config_43xx}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_board_nxp_lpcxpresso_4337/inc}&quot;"/>
 								</option>
-								<option id="com.crt.advproject.gcc.fpu.309291943" superClass="com.crt.advproject.gcc.fpu" value="com.crt.advproject.gcc.fpu.fpv4" valueType="enumerated"/>
+								<option id="com.crt.advproject.gcc.fpu.309291943" name="Floating point" superClass="com.crt.advproject.gcc.fpu" value="com.crt.advproject.gcc.fpu.fpv4" valueType="enumerated"/>
 								<inputType id="com.crt.advproject.compiler.input.1516254107" superClass="com.crt.advproject.compiler.input"/>
 							</tool>
 							<tool id="com.crt.advproject.gas.exe.release.775046649" name="MCU Assembler" superClass="com.crt.advproject.gas.exe.release">
 								<option id="com.crt.advproject.gas.arch.21731476" name="Architecture" superClass="com.crt.advproject.gas.arch" value="com.crt.advproject.gas.target.cm4" valueType="enumerated"/>
 								<option id="com.crt.advproject.gas.thumb.772042393" name="Thumb mode" superClass="com.crt.advproject.gas.thumb" value="true" valueType="boolean"/>
 								<option id="gnu.both.asm.option.flags.crt.854845044" name="Assembler flags" superClass="gnu.both.asm.option.flags.crt" value="-c -x assembler-with-cpp -D__MULTICORE_NONE -DNDEBUG -D__CODE_RED -D__REDLIB__" valueType="string"/>
-								<option id="com.crt.advproject.gas.hdrlib.410921825" superClass="com.crt.advproject.gas.hdrlib" value="Redlib" valueType="enumerated"/>
-								<option id="com.crt.advproject.gas.fpu.2127935996" superClass="com.crt.advproject.gas.fpu" value="com.crt.advproject.gas.fpu.fpv4" valueType="enumerated"/>
+								<option id="com.crt.advproject.gas.hdrlib.410921825" name="Library headers" superClass="com.crt.advproject.gas.hdrlib" value="Redlib" valueType="enumerated"/>
+								<option id="com.crt.advproject.gas.fpu.2127935996" name="Floating point" superClass="com.crt.advproject.gas.fpu" value="com.crt.advproject.gas.fpu.fpv4" valueType="enumerated"/>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1288839843" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 								<inputType id="com.crt.advproject.assembler.input.1451465540" name="Additional Assembly Source Files" superClass="com.crt.advproject.assembler.input"/>
 							</tool>
@@ -153,15 +156,16 @@
 									<listOptionValue builtIn="false" value="--gc-sections"/>
 								</option>
 								<option id="com.crt.advproject.link.gcc.hdrlib.1963560065" name="Library" superClass="com.crt.advproject.link.gcc.hdrlib" value="com.crt.advproject.gcc.link.hdrlib.codered.nohost" valueType="enumerated"/>
-								<option id="gnu.c.link.option.libs.1099742750" superClass="gnu.c.link.option.libs" valueType="libs">
+								<option id="gnu.c.link.option.libs.1099742750" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="lpc_board_nxp_lpcxpresso_4337"/>
 									<listOptionValue builtIn="false" value="lpc_chip_43xx"/>
 								</option>
-								<option id="gnu.c.link.option.paths.2007996046" superClass="gnu.c.link.option.paths" valueType="libPaths">
+								<option id="gnu.c.link.option.paths.2007996046" name="Library search path (-L)" superClass="gnu.c.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_43xx/Release}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_board_nxp_lpcxpresso_4337/Release}&quot;"/>
 								</option>
-								<option id="com.crt.advproject.link.fpu.1379542920" superClass="com.crt.advproject.link.fpu" value="com.crt.advproject.link.fpu.fpv4" valueType="enumerated"/>
+								<option id="com.crt.advproject.link.fpu.1379542920" name="Floating point" superClass="com.crt.advproject.link.fpu" value="com.crt.advproject.link.fpu.fpv4" valueType="enumerated"/>
+								<option id="com.crt.advproject.link.memory.heapAndStack.1727164032" name="Heap and Stack options" superClass="com.crt.advproject.link.memory.heapAndStack" value="&amp;Heap:Default;Post Data;Default&amp;Stack:Default;End;Default" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.363360195" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -271,4 +275,5 @@
 &lt;/TargetConfig&gt;</projectStorage>
 	</storageModule>
 	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>
