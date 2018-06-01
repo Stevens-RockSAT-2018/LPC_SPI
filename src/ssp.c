@@ -84,6 +84,8 @@
 #define CSPIN_ADC4		8
 #define CSPIN_ADC5		9
 #define CSPIN_ADC6		10
+#define debugging_pin 5,2
+
 
 #define TICKRATE_HZ (1000) /* 1000 ticks per second */
 
@@ -476,7 +478,6 @@ void DMA_IRQHandler(void)
 	}
 }
 
-
 /**
  * @brief	Main routine for SSP example
  * @return	Nothing
@@ -547,6 +548,11 @@ void set_LED_color(enum color c) {
 	}
 }
 
+void finished_usb() {
+	Chip_GPIO_SetPinState(LPC_GPIO_PORT, debugging_pin, false);
+}
+
+
 
 int main(void)
 {
@@ -559,6 +565,9 @@ int main(void)
 
 	Chip_GPIO_Init(LPC_GPIO_PORT);
 //	set_cspins();
+
+
+
 	/* SSP initialization */
 	Board_SSP_Init(LPC_SSP);
 
@@ -654,13 +663,18 @@ if (ret == LPC_OK) {
 
 DEBUGSTR("USB CDC class based virtual Comm port example!\r\n");
 
+Chip_SCU_PinMuxSet(debugging_pin, SCU_MODE_FUNC4);
+Chip_SCU_PinMuxSet(2,2, SCU_MODE_FUNC4);
+
+Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, debugging_pin); // P2_2
+
+
 	while (1) {
 		if (vcom_connected() != 0) {
 			set_LED_color(RED);
 			read_accel();
 			vcom_write(accel_readings, (NUM_ACCEL+1)*4);
-			set_LED_color(-1);
-			delay_msec(1000);
+			Chip_GPIO_SetPinState(LPC_GPIO_PORT, debugging_pin, true);
 		} else {
 			set_LED_color(BLUE);
 		}

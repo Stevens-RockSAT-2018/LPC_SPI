@@ -54,12 +54,15 @@ VCOM_DATA_T g_vCOM;
  ****************************************************************************/
 
 /* VCOM bulk EP_IN endpoint handler */
+extern void finished_usb();
+
 static ErrorCode_t VCOM_bulk_in_hdlr(USBD_HANDLE_T hUsb, void *data, uint32_t event)
 {
 	VCOM_DATA_T *pVcom = (VCOM_DATA_T *) data;
 
 	if (event == USB_EVT_IN) {
 		pVcom->tx_flags &= ~VCOM_TX_BUSY;
+		finished_usb();
 	}
 	return LPC_OK;
 }
