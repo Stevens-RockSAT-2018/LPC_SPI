@@ -183,36 +183,6 @@ static uint8_t dmaChSSPTx, dmaChSSPRx;
 static volatile uint8_t isDmaTxfCompleted = 0;
 static volatile uint8_t isDmaRxfCompleted = 0;
 
-#if defined(DEBUG_ENABLE)
-static char sspWaitingMenu[] = "SSP Polling: waiting for transfer ...\n\r";
-static char sspIntWaitingMenu[]  = "SSP Interrupt: waiting for transfer ...\n\r";
-static char sspDMAWaitingMenu[]  = "SSP DMA: waiting for transfer ...\n\r";
-
-static char sspPassedMenu[] = "SSP: Transfer PASSED\n\r";
-static char sspFailedMenu[] = "SSP: Transfer FAILED\n\r";
-
-static char sspTransferModeSel[] = "\n\rPress 1-3 or 'q' to exit\n\r"
-								   "\t 1: SSP Polling Read Write\n\r"
-								   "\t 2: SSP Int Read Write\n\r"
-								   "\t 3: SSP DMA Read Write\n\r";
-
-static char helloMenu[] = "Hello NXP Semiconductors \n\r";
-static char sspMenu[] = "SSP demo \n\r";
-static char sspMainMenu[] = "\t 1: Select SSP Mode (Master/Slave)\n\r"
-							"\t 2: Select Transfer Mode\n\r";
-static char sspSelectModeMenu[] = "\n\rPress 1-2 to select or 'q' to exit:\n\r"
-								  "\t 1: Master \n\r"
-								  "\t 2: Slave\n\r";
-#endif /* defined(DEBUG_ENABLE) */
-
-/*****************************************************************************
- * Public types/enumerations/variables
- ****************************************************************************/
-
-/*****************************************************************************
- * Private functions
- ****************************************************************************/
-
 /**
  * @brief	Handle interrupt from SysTick timer
  * @return	Nothing
@@ -265,177 +235,6 @@ static uint8_t Buffer_Verify(void)
 	return 0;
 }
 
-/* Select the Transfer mode : Polling, Interrupt or DMA */
-static void appSSPTest(void)
-{
-	int key;
-
-	DEBUGOUT(sspTransferModeSel);
-
-	dmaChSSPTx = Chip_GPDMA_GetFreeChannel(LPC_GPDMA, LPC_GPDMA_SSP_TX);
-	dmaChSSPRx = Chip_GPDMA_GetFreeChannel(LPC_GPDMA, LPC_GPDMA_SSP_RX);
-
-	xf_setup.length = BUFFER_SIZE;
-	xf_setup.tx_data = Tx_Buf;
-	xf_setup.rx_data = Rx_Buf;
-
-	while (1) {
-		key = 0xFF;
-		do {
-			key = DEBUGIN();
-		} while ((key & 0xFF) == 0xFF);
-
-		Buffer_Init();
-
-		switch (key) {
-		case SSP_POLLING_SEL:	/* SSP Polling Read Write Mode */
-			DEBUGOUT(sspWaitingMenu);
-			xf_setup.rx_cnt = xf_setup.tx_cnt = 0;
-
-			Chip_SSP_RWFrames_Blocking(LPC_SSP, &xf_setup);
-
-			if (Buffer_Verify() == 0) {
-				DEBUGOUT(sspPassedMenu);
-			}
-			else {
-				DEBUGOUT(sspFailedMenu);
-			}
-			break;
-
-		case SSP_INTERRUPT_SEL:
-			DEBUGOUT(sspIntWaitingMenu);
-
-			isXferCompleted = 0;
-			xf_setup.rx_cnt = xf_setup.tx_cnt = 0;
-
-			Chip_SSP_Int_FlushData(LPC_SSP);/* flush dummy data from SSP FiFO */
-			if (SSP_DATA_BYTES(ssp_format.bits) == 1) {
-				Chip_SSP_Int_RWFrames8Bits(LPC_SSP, &xf_setup);
-			}
-			else {
-				Chip_SSP_Int_RWFrames16Bits(LPC_SSP, &xf_setup);
-			}
-
-			Chip_SSP_Int_Enable(LPC_SSP);	/* enable interrupt */
-			while (!isXferCompleted) {}
-
-			if (Buffer_Verify() == 0) {
-				DEBUGOUT(sspPassedMenu);
-			}
-			else {
-				DEBUGOUT(sspFailedMenu);
-			}
-			break;
-
-		case SSP_DMA_SEL:	/* SSP DMA Read and Write: fixed on 8bits */
-			DEBUGOUT(sspDMAWaitingMenu);
-			isDmaTxfCompleted = isDmaRxfCompleted = 0;
-
-			Chip_SSP_DMA_Enable(LPC_SSP);
-			/* data Tx_Buf --> SSP */
-			Chip_GPDMA_Transfer(LPC_GPDMA, dmaChSSPTx,
-							  (uint32_t) &Tx_Buf[0],
-							  LPC_GPDMA_SSP_TX,
-							  GPDMA_TRANSFERTYPE_M2P_CONTROLLER_DMA,
-							  BUFFER_SIZE);
-			/* data SSP --> Rx_Buf */
-			Chip_GPDMA_Transfer(LPC_GPDMA, dmaChSSPRx,
-							  LPC_GPDMA_SSP_RX,
-							  (uint32_t) &Rx_Buf[0],
-							  GPDMA_TRANSFERTYPE_P2M_CONTROLLER_DMA,
-							  BUFFER_SIZE);
-
-			while (!isDmaTxfCompleted || !isDmaRxfCompleted) {}
-			if (Buffer_Verify() == 0) {
-				DEBUGOUT(sspPassedMenu);
-			}
-			else {
-				DEBUGOUT(sspFailedMenu);
-			}
-			Chip_SSP_DMA_Disable(LPC_SSP);
-			break;
-
-		case 'q':
-		case 'Q':
-			Chip_GPDMA_Stop(LPC_GPDMA, dmaChSSPTx);
-			Chip_GPDMA_Stop(LPC_GPDMA, dmaChSSPRx);
-			return;
-
-		default:
-			break;
-		}
-
-		DEBUGOUT(sspTransferModeSel);
-	}
-
-}
-
-/* Select the SSP mode : Master or Slave */
-static void appSSPSelectModeMenu(void)
-{
-	int key;
-
-	DEBUGOUT(sspSelectModeMenu);
-
-	while (1) {
-		key = 0xFF;
-		do {
-			key = DEBUGIN();
-		} while ((key & 0xFF) == 0xFF);
-
-		switch (key) {
-		case SSP_MASTER_MODE_SEL:	/* Master */
-			Chip_SSP_SetMaster(LPC_SSP, 1);
-			DEBUGOUT("Master Mode\n\r");
-			return;
-
-		case SSP_SLAVE_MODE_SEL:	/* Slave */
-			Chip_SSP_SetMaster(LPC_SSP, 0);
-			DEBUGOUT("Slave Mode\n\r");
-			return;
-
-		case 'q':
-			return;
-
-		default:
-			break;
-		}
-		DEBUGOUT(sspSelectModeMenu);
-	}
-
-}
-
-/* The main menu of the example. Allow user select the SSP mode (master or slave) and Transfer
-   mode (Polling, Interrupt or DMA) */
-static void appSSPMainMenu(void)
-{
-	int key;
-
-	DEBUGOUT(helloMenu);
-	DEBUGOUT(sspMenu);
-	DEBUGOUT(sspMainMenu);
-
-	while (1) {
-		key = 0xFF;
-		do {
-			key = DEBUGIN();
-		} while ((key & 0xFF) == 0xFF);
-
-		switch (key) {
-		case SSP_MODE_SEL:	/* Select SSP Mode */
-			appSSPSelectModeMenu();
-			break;
-
-		case SSP_TRANSFER_MODE_SEL:	/* Select Transfer Mode */
-			appSSPTest();
-			break;
-
-		default:
-			break;
-		}
-		DEBUGOUT(sspMainMenu);
-	}
-}
 
 /*****************************************************************************
  * Public functions
@@ -516,7 +315,8 @@ void delay_msec(uint32_t mills) {
 
 void read_accel() {
 	uint32_t timestamp = tick_ct;
-	for (int i = 0; i < NUM_ACCEL; i++) {
+	accel_readings[0] = timestamp;
+	for (int i = 1; i <= NUM_ACCEL; i++) {
 		accel_readings[i] = ADC_read(i);
 	}
 
