@@ -35,6 +35,7 @@
 #include <string.h>
 #include "app_usbd_cfg.h"
 #include "cdc_vcom.h"
+#include "pin_cfg.h"
 
 /*****************************************************************************
  * Private types/enumerations/variables
@@ -87,7 +88,7 @@
 #define debugging_pin 5,2
 
 
-#define TICKRATE_HZ (1000) /* 1000 ticks per second */
+#define TICKRATE_HZ (10000) /* 1000 ticks per second */
 
 #define NUM_ACCEL 6
 static uint32_t accel_readings[NUM_ACCEL+1]; // zeroth element is timestamp
@@ -287,25 +288,30 @@ uint32_t ADC_read(uint8_t cs_pin_sel){
 	xf_setup.rx_data = Rx_Buf;
 	xf_setup.rx_cnt = xf_setup.tx_cnt = 0;
 
-//	Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT, 1, cs_pin[cs_pin_sel]);
+	set_chip_select(cs_pin_sel, false);
 	Tx_Buf[0] = SETUP_FLAG | 1 << 3 | SCAN_MODE_0_N;
 	Tx_Buf[1] = 0;
 	Tx_Buf[2] = 0;
 	Tx_Buf[3] = 0;
 
-	uint32_t data = Chip_SSP_RWFrames_Blocking(LPC_SSP, &xf_setup);
-//	Chip_GPIO_SetPinOutHigh(LPC_GPIO_PORT, 1, cs_pin[cs_pin_sel]);
+	uint32_t error = Chip_SSP_RWFrames_Blocking(LPC_SSP, &xf_setup);
+
+	set_chip_select(cs_pin_sel, true);
+
 	uint8_t *rxbuf = xf_setup.rx_data;
 	return rxbuf[0] << 24 | rxbuf[1] << 16 | rxbuf[2] << 8 | rxbuf[3];
 }
 
-void set_cspins(){
+
+/* void set_cspins(){
 	for (int i = 0; i < 5; ++i) {
 		Chip_GPIO_SetPinOutHigh(LPC_GPIO_PORT, 1, cs_pin[i]);
 	}
-}
+}*/
 
-void delay_msec(uint32_t mills) {
+
+
+void delay_ticks(uint32_t mills) {
 	uint32_t start = tick_ct;
 	uint32_t stop = tick_ct + mills; // fix if changing systick
 	while (tick_ct < stop) {
@@ -313,12 +319,22 @@ void delay_msec(uint32_t mills) {
 	}
 }
 
+uint32_t sample_num = 0;
+
 void read_accel() {
+
+	start_conversion();
+	delay_ticks(100);
+	finish_conversion();
+//	wait_for_conversion(1);
+
 	uint32_t timestamp = tick_ct;
-	accel_readings[0] = timestamp;
-	for (int i = 1; i <= NUM_ACCEL; i++) {
+	accel_readings[0] = sample_num;
+	for (int i = 1; i <= NUM_ACCEL-1; i++) {
 		accel_readings[i] = ADC_read(i);
 	}
+	accel_readings[NUM_ACCEL] = 0;
+	sample_num++;
 
 }
 
@@ -365,8 +381,6 @@ int main(void)
 
 	Chip_GPIO_Init(LPC_GPIO_PORT);
 //	set_cspins();
-
-
 
 	/* SSP initialization */
 	Board_SSP_Init(LPC_SSP);
@@ -463,11 +477,21 @@ if (ret == LPC_OK) {
 
 DEBUGSTR("USB CDC class based virtual Comm port example!\r\n");
 
-Chip_SCU_PinMuxSet(debugging_pin, SCU_MODE_FUNC4);
-Chip_SCU_PinMuxSet(2,2, SCU_MODE_FUNC4);
+//Chip_SCU_PinMuxSet(debugging_pin, SCU_MODE_FUNC4);
+//Chip_SCU_PinMuxSet(2,2, SCU_MODE_FUNC4);
+//
+//Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, debugging_pin); // P2_2
 
-Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, debugging_pin); // P2_2
+SIT_Pin_Setup();
 
+//while (1) {
+//	delay_ticks(500);
+//	set_LED_color(RED);
+//	delay_ticks(500);
+//	set_LED_color(GREEN);
+//	delay_ticks(500);
+//	set_LED_color(BLUE);
+//}
 
 	while (1) {
 		if (vcom_connected() != 0) {
@@ -475,32 +499,11 @@ Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, debugging_pin); // P2_2
 			read_accel();
 			vcom_write(accel_readings, (NUM_ACCEL+1)*4);
 			Chip_GPIO_SetPinState(LPC_GPIO_PORT, debugging_pin, true);
+			delay_ticks(1000);
 		} else {
 			set_LED_color(BLUE);
 		}
 	}
-
-
-	while (1) {
-		/* Check if host has connected and opened the VCOM port */
-		if ((vcom_connected() != 0) && (prompt == 0)) {
-			vcom_write("Hello World!!\r\n", 15);
-			prompt = 1;
-		}
-		/* If VCOM port is opened echo whatever we receive back to host. */
-		if (prompt) {
-			vcom_write("Hello World!!   ", 15);
-
-			rdCnt = vcom_bread(&g_rxBuff[0], 256);
-			if (rdCnt) {
-	//				vcom_write(&g_rxBuff[0], rdCnt);
-			}
-		}
-		/* Sleep until next IRQ happens */
-		__WFI();
-	}
-
-
 
 	return 0;
 }
