@@ -16,7 +16,7 @@
 #define MODE_EOC1 3, 1, SCU_MODE_INACT | SCU_MODE_FUNC4 | SCU_MODE_INBUFF_EN
 #define PIN_CNVST 3,4 // P6_5
 #define MODE_CNVST SCU_MODE_FUNC0
-#define NUM_CS 1
+#define NUM_CS 5
 
 
 void set_chip_select(int accel, bool state) {
@@ -63,9 +63,9 @@ void SIT_Pin_Setup() {
 	Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, PIN_CNVST);
 	for (int i = 1; i <= NUM_CS; i++) {
 		set_chip_select(i, true);
+		ADC_setup(i);
 	}
 	Chip_GPIO_SetPinOutHigh(LPC_GPIO_PORT, PIN_CNVST);
-
 }
 
 void wait_for_conversion(int accel) {

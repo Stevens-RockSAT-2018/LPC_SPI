@@ -1,46 +1,46 @@
 src/cdc_desc.o src/cdc_desc.d: ../src/cdc_desc.c \
- /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/LPC_SPI/inc/app_usbd_cfg.h \
- /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/lpc_types.h \
- /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/error.h \
- /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_rom_api.h \
- /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd.h \
- /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_hw.h \
- /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_core.h \
- /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_mscuser.h \
- /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_msc.h \
- /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_dfuuser.h \
- /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_dfu.h \
- /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_hiduser.h \
- /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_hid.h \
- /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_cdcuser.h \
- /Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_cdc.h
+ /home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/LPC_SPI/inc/app_usbd_cfg.h \
+ /home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/lpc_types.h \
+ /home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/error.h \
+ /home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_rom_api.h \
+ /home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd.h \
+ /home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_hw.h \
+ /home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_core.h \
+ /home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_mscuser.h \
+ /home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_msc.h \
+ /home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_dfuuser.h \
+ /home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_dfu.h \
+ /home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_hiduser.h \
+ /home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_hid.h \
+ /home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_cdcuser.h \
+ /home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_cdc.h
 
-/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/LPC_SPI/inc/app_usbd_cfg.h:
+/home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/LPC_SPI/inc/app_usbd_cfg.h:
 
-/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/lpc_types.h:
+/home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/lpc_types.h:
 
-/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/error.h:
+/home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/error.h:
 
-/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_rom_api.h:
+/home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_rom_api.h:
 
-/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd.h:
+/home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd.h:
 
-/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_hw.h:
+/home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_hw.h:
 
-/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_core.h:
+/home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_core.h:
 
-/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_mscuser.h:
+/home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_mscuser.h:
 
-/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_msc.h:
+/home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_msc.h:
 
-/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_dfuuser.h:
+/home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_dfuuser.h:
 
-/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_dfu.h:
+/home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_dfu.h:
 
-/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_hiduser.h:
+/home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_hiduser.h:
 
-/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_hid.h:
+/home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_hid.h:
 
-/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_cdcuser.h:
+/home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_cdcuser.h:
 
-/Users/jesse/Documents/MCUXpressoIDE_10.1.1/workspace/lpc_chip_43xx/inc/usbd_rom/usbd_cdc.h:
+/home/jesse/Sync/RockSAT\ Vibe\ Iso/rocksat_workspace/lpc_chip_43xx/inc/usbd_rom/usbd_cdc.h:

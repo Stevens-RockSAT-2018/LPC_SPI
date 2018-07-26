@@ -74,10 +74,15 @@
 #define SSP_INTERRUPT_SEL                   (0x32)
 #define SSP_DMA_SEL                         (0x33)
 
-#define SETUP_FLAG     	(0x80)
+#define CONV_FLAG     	(0x80)
 #define SCAN_MODE_NONE 	(0x06)
 #define SCAN_MODE_0_N  	(0x00)
 #define SCAN_MODE_N_4 	(0x04)
+#define CH_SEL_FLAG		(0x01 << 3)
+
+#define SETUP_FLAG		(0x40)
+#define CL_SEL			(0x01 << 4)
+#define REF_SEL			(0x02 << 2)
 
 #define CSPIN_ADC1		5
 #define CSPIN_ADC2		6
@@ -88,9 +93,9 @@
 #define debugging_pin 5,2
 
 
-#define TICKRATE_HZ (10000) /* 1000 ticks per second */
+#define TICKRATE_HZ (1000) /* 1000000 ticks per second */
 
-#define NUM_ACCEL 6
+#define NUM_ACCEL 5
 static uint32_t accel_readings[NUM_ACCEL+1]; // zeroth element is timestamp
 
 
@@ -288,11 +293,12 @@ uint32_t ADC_read(uint8_t cs_pin_sel){
 	xf_setup.rx_data = Rx_Buf;
 	xf_setup.rx_cnt = xf_setup.tx_cnt = 0;
 
-	set_chip_select(cs_pin_sel, false);
-	Tx_Buf[0] = SETUP_FLAG | 1 << 3 | SCAN_MODE_0_N;
+	Tx_Buf[0] = 0;
 	Tx_Buf[1] = 0;
 	Tx_Buf[2] = 0;
 	Tx_Buf[3] = 0;
+
+
 
 	uint32_t error = Chip_SSP_RWFrames_Blocking(LPC_SSP, &xf_setup);
 
@@ -302,11 +308,26 @@ uint32_t ADC_read(uint8_t cs_pin_sel){
 	return rxbuf[0] << 24 | rxbuf[1] << 16 | rxbuf[2] << 8 | rxbuf[3];
 }
 
+void ADC_setup(uint8_t cs_pin_sel){
+		xf_setup.length = 2;
+		xf_setup.tx_data = Tx_Buf;
+		xf_setup.rx_data = Rx_Buf;
+		xf_setup.rx_cnt = xf_setup.tx_cnt = 0;
+		set_chip_select(cs_pin_sel, false);
+		Tx_Buf[0] = CONV_FLAG | CH_SEL_FLAG | SCAN_MODE_0_N;
+		Tx_Buf[1] = SETUP_FLAG | CL_SEL | REF_SEL;
+		uint32_t error = Chip_SSP_RWFrames_Blocking(LPC_SSP, &xf_setup);
+
+		set_chip_select(cs_pin_sel, true);
+
+		uint8_t *rx_buf = xf_setup.rx_data;
+//		return rx_buf[0] << 24 | rx_buf[1] << 16 | rx_buf[2] << 8 | rx_buf[3];
+
+}
 
 /* void set_cspins(){
 	for (int i = 0; i < 5; ++i) {
 		Chip_GPIO_SetPinOutHigh(LPC_GPIO_PORT, 1, cs_pin[i]);
-	}
 }*/
 
 
@@ -499,7 +520,7 @@ SIT_Pin_Setup();
 			read_accel();
 			vcom_write(accel_readings, (NUM_ACCEL+1)*4);
 			Chip_GPIO_SetPinState(LPC_GPIO_PORT, debugging_pin, true);
-			delay_ticks(1000);
+			delay_ticks(10);
 		} else {
 			set_LED_color(BLUE);
 		}

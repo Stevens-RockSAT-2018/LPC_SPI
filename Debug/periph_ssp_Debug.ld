@@ -5,7 +5,7 @@
  * Generated linker script file for LPC4337
  * Created from linkscript.ldt by FMCreateLinkLibraries
  * Using Freemarker v2.3.23
- * MCUXpresso IDE v10.1.1 [Build 606] [2018-01-02] on May 22, 2018 11:29:28 PM
+ * MCUXpresso IDE v10.2.0 [Build 759] [2018-05-15] on Jul 23, 2018 10:47:38 PM
  */
 
 INCLUDE "periph_ssp_Debug_library.ld"
@@ -21,8 +21,10 @@ SECTIONS
         *(.text_Flash2*) /* for compatibility with previous releases */
         *(.text_MFlashB512*) /* for compatibility with previous releases */
         *(.text.$Flash2*)
-        *(.text.$MFlashB512*)        *(.rodata.$Flash2*)
-        *(.rodata.$MFlashB512*)    } > MFlashB512
+        *(.text.$MFlashB512*)
+        *(.rodata.$Flash2*)
+        *(.rodata.$MFlashB512*)
+    } > MFlashB512
 
     /* MAIN TEXT SECTION */
     .text : ALIGN(4)
@@ -67,15 +69,13 @@ SECTIONS
 
         *(.after_vectors*)
 
-
-
-    } >MFlashA512
+    } > MFlashA512
 
     .text : ALIGN(4)
     {
-        *(.text*)
-        *(.rodata .rodata.* .constdata .constdata.*)
-        . = ALIGN(4);
+       *(.text*)
+       *(.rodata .rodata.* .constdata .constdata.*)
+       . = ALIGN(4);
     } > MFlashA512
     /*
      * for exception handling/unwind - some Newlib functions (in common
@@ -85,6 +85,7 @@ SECTIONS
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
     } > MFlashA512
+
     __exidx_start = .;
 
     .ARM.exidx : ALIGN(4)
@@ -96,6 +97,7 @@ SECTIONS
     _etext = .;
         
     /* DATA section for RamLoc40 */
+
     .data_RAM2 : ALIGN(4)
     {
         FILL(0xff)
@@ -107,8 +109,8 @@ SECTIONS
         . = ALIGN(4) ;
         PROVIDE(__end_data_RAM2 = .) ;
      } > RamLoc40 AT>MFlashA512
-
     /* DATA section for RamAHB32 */
+
     .data_RAM3 : ALIGN(4)
     {
         FILL(0xff)
@@ -120,8 +122,8 @@ SECTIONS
         . = ALIGN(4) ;
         PROVIDE(__end_data_RAM3 = .) ;
      } > RamAHB32 AT>MFlashA512
-
     /* DATA section for RamAHB16 */
+
     .data_RAM4 : ALIGN(4)
     {
         FILL(0xff)
@@ -133,8 +135,8 @@ SECTIONS
         . = ALIGN(4) ;
         PROVIDE(__end_data_RAM4 = .) ;
      } > RamAHB16 AT>MFlashA512
-
     /* DATA section for RamAHB_ETB16 */
+
     .data_RAM5 : ALIGN(4)
     {
         FILL(0xff)
@@ -146,7 +148,6 @@ SECTIONS
         . = ALIGN(4) ;
         PROVIDE(__end_data_RAM5 = .) ;
      } > RamAHB_ETB16 AT>MFlashA512
-
     /* MAIN DATA SECTION */
     .uninit_RESERVED : ALIGN(4)
     {
@@ -154,6 +155,7 @@ SECTIONS
         . = ALIGN(4) ;
         _end_uninit_RESERVED = .;
     } > RamLoc32
+
     /* Main DATA section (RamLoc32) */
     .data : ALIGN(4)
     {
@@ -165,6 +167,7 @@ SECTIONS
        . = ALIGN(4) ;
        _edata = . ;
     } > RamLoc32 AT>MFlashA512
+
     /* BSS section for RamLoc40 */
     .bss_RAM2 : ALIGN(4)
     {
@@ -174,6 +177,7 @@ SECTIONS
        . = ALIGN (. != 0 ? 4 : 1) ; /* avoid empty segment */
        PROVIDE(__end_bss_RAM2 = .) ;
     } > RamLoc40 
+
     /* BSS section for RamAHB32 */
     .bss_RAM3 : ALIGN(4)
     {
@@ -183,6 +187,7 @@ SECTIONS
        . = ALIGN (. != 0 ? 4 : 1) ; /* avoid empty segment */
        PROVIDE(__end_bss_RAM3 = .) ;
     } > RamAHB32 
+
     /* BSS section for RamAHB16 */
     .bss_RAM4 : ALIGN(4)
     {
@@ -192,6 +197,7 @@ SECTIONS
        . = ALIGN (. != 0 ? 4 : 1) ; /* avoid empty segment */
        PROVIDE(__end_bss_RAM4 = .) ;
     } > RamAHB16 
+
     /* BSS section for RamAHB_ETB16 */
     .bss_RAM5 : ALIGN(4)
     {
@@ -201,6 +207,7 @@ SECTIONS
        . = ALIGN (. != 0 ? 4 : 1) ; /* avoid empty segment */
        PROVIDE(__end_bss_RAM5 = .) ;
     } > RamAHB_ETB16 
+
     /* MAIN BSS SECTION */
     .bss : ALIGN(4)
     {
@@ -211,6 +218,7 @@ SECTIONS
         _ebss = .;
         PROVIDE(end = .);
     } > RamLoc32
+
     /* NOINIT section for RamLoc40 */
     .noinit_RAM2 (NOLOAD) : ALIGN(4)
     {
@@ -218,6 +226,7 @@ SECTIONS
        *(.noinit.$RamLoc40*)
        . = ALIGN(4) ;
     } > RamLoc40 
+
     /* NOINIT section for RamAHB32 */
     .noinit_RAM3 (NOLOAD) : ALIGN(4)
     {
@@ -225,6 +234,7 @@ SECTIONS
        *(.noinit.$RamAHB32*)
        . = ALIGN(4) ;
     } > RamAHB32 
+
     /* NOINIT section for RamAHB16 */
     .noinit_RAM4 (NOLOAD) : ALIGN(4)
     {
@@ -232,6 +242,7 @@ SECTIONS
        *(.noinit.$RamAHB16*)
        . = ALIGN(4) ;
     } > RamAHB16 
+
     /* NOINIT section for RamAHB_ETB16 */
     .noinit_RAM5 (NOLOAD) : ALIGN(4)
     {
@@ -239,6 +250,7 @@ SECTIONS
        *(.noinit.$RamAHB_ETB16*)
        . = ALIGN(4) ;
     } > RamAHB_ETB16 
+
     /* DEFAULT NOINIT SECTION */
     .noinit (NOLOAD): ALIGN(4)
     {
