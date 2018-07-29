@@ -351,7 +351,7 @@ void read_accel() {
 //	finish_conversion();
 //	wait_for_conversion(1);
 
-	uint32_t timestamp = tick_ct;
+//	uint32_t timestamp = tick_ct;
 	accel_readings[0] = sample_num;
 	for (int i = 1; i <= NUM_ACCEL-1; i++) {
 		accel_readings[i] = ADC_read(i);
@@ -421,109 +421,89 @@ int main(void)
         Chip_SSP_SetFormat(LPC_SSP, ssp_format.bits, ssp_format.frameFormat, ssp_format.clockMode);
 	Chip_SSP_Enable(LPC_SSP);
 
-	/* Initialize GPDMA controller */
-	Chip_GPDMA_Init(LPC_GPDMA);
-
-	/* Setting GPDMA interrupt */
-	NVIC_DisableIRQ(DMA_IRQn);
-	NVIC_SetPriority(DMA_IRQn, ((0x01 << 3) | 0x01));
-	NVIC_EnableIRQ(DMA_IRQn);
-
 	/* Setting SSP interrupt */
 	NVIC_EnableIRQ(SSP_IRQ);
 
-#if (defined(BOARD_HITEX_EVA_1850) || defined(BOARD_HITEX_EVA_4350))
-	Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0x6, 10);	/* SSEL_MUX_A */
-	Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0x6, 11);	/* SSEL_MUX_B */
-	Chip_GPIO_SetPinState(LPC_GPIO_PORT, 0x6, 10, true);
-	Chip_GPIO_SetPinState(LPC_GPIO_PORT, 0x6, 11, false);
-#endif
+	/** USB THINGS **/
+	USBD_API_INIT_PARAM_T usb_param;
+	USB_CORE_DESCS_T desc;
+	ErrorCode_t ret = LPC_OK;
+	uint32_t prompt = 0, rdCnt = 0;
+	USB_CORE_CTRL_T *pCtrl;
 
-/** USB THINGS **/
-USBD_API_INIT_PARAM_T usb_param;
-USB_CORE_DESCS_T desc;
-ErrorCode_t ret = LPC_OK;
-uint32_t prompt = 0, rdCnt = 0;
-USB_CORE_CTRL_T *pCtrl;
+	/* enable clocks and pinmux */
+	USB_init_pin_clk();
 
-/* enable clocks and pinmux */
-USB_init_pin_clk();
+	/* Init USB API structure */
+	g_pUsbApi = (const USBD_API_T *) LPC_ROM_API->usbdApiBase;
 
-/* Init USB API structure */
-g_pUsbApi = (const USBD_API_T *) LPC_ROM_API->usbdApiBase;
+	/* initialize call back structures */
+	memset((void *) &usb_param, 0, sizeof(USBD_API_INIT_PARAM_T));
+	usb_param.usb_reg_base = LPC_USB_BASE;
+	usb_param.max_num_ep = 4;
+	usb_param.mem_base = USB_STACK_MEM_BASE;
+	usb_param.mem_size = USB_STACK_MEM_SIZE;
 
-/* initialize call back structures */
-memset((void *) &usb_param, 0, sizeof(USBD_API_INIT_PARAM_T));
-usb_param.usb_reg_base = LPC_USB_BASE;
-usb_param.max_num_ep = 4;
-usb_param.mem_base = USB_STACK_MEM_BASE;
-usb_param.mem_size = USB_STACK_MEM_SIZE;
-
-/* Set the USB descriptors */
-desc.device_desc = (uint8_t *) USB_DeviceDescriptor;
-desc.string_desc = (uint8_t *) USB_StringDescriptor;
-#ifdef USE_USB0
-desc.high_speed_desc = USB_HsConfigDescriptor;
-desc.full_speed_desc = USB_FsConfigDescriptor;
-desc.device_qualifier = (uint8_t *) USB_DeviceQualifier;
-#else
-/* Note, to pass USBCV test full-speed only devices should have both
- * descriptor arrays point to same location and device_qualifier set
- * to 0.
- */
-desc.high_speed_desc = USB_FsConfigDescriptor;
-desc.full_speed_desc = USB_FsConfigDescriptor;
-desc.device_qualifier = 0;
-#endif
-
-/* USB Initialization */
-ret = USBD_API->hw->Init(&g_hUsb, &desc, &usb_param);
-if (ret == LPC_OK) {
-
-	/*	WORKAROUND for artf45032 ROM driver BUG:
-			Due to a race condition there is the chance that a second NAK event will
-			occur before the default endpoint0 handler has completed its preparation
-			of the DMA engine for the first NAK event. This can cause certain fields
-			in the DMA descriptors to be in an invalid state when the USB controller
-			reads them, thereby causing a hang.
+	/* Set the USB descriptors */
+	desc.device_desc = (uint8_t *) USB_DeviceDescriptor;
+	desc.string_desc = (uint8_t *) USB_StringDescriptor;
+	#ifdef USE_USB0
+	desc.high_speed_desc = USB_HsConfigDescriptor;
+	desc.full_speed_desc = USB_FsConfigDescriptor;
+	desc.device_qualifier = (uint8_t *) USB_DeviceQualifier;
+	#else
+	/* Note, to pass USBCV test full-speed only devices should have both
+	 * descriptor arrays point to same location and device_qualifier set
+	 * to 0.
 	 */
-	pCtrl = (USB_CORE_CTRL_T *) g_hUsb;	/* convert the handle to control structure */
-	g_Ep0BaseHdlr = pCtrl->ep_event_hdlr[0];/* retrieve the default EP0_OUT handler */
-	pCtrl->ep_event_hdlr[0] = EP0_patch;/* set our patch routine as EP0_OUT handler */
+	desc.high_speed_desc = USB_FsConfigDescriptor;
+	desc.full_speed_desc = USB_FsConfigDescriptor;
+	desc.device_qualifier = 0;
+	#endif
 
-	/* Init VCOM interface */
-	ret = vcom_init(g_hUsb, &desc, &usb_param);
+	/* USB Initialization */
+	ret = USBD_API->hw->Init(&g_hUsb, &desc, &usb_param);
 	if (ret == LPC_OK) {
-		/*  enable USB interrupts */
-		NVIC_EnableIRQ(LPC_USB_IRQ);
-		/* now connect */
-		USBD_API->hw->Connect(g_hUsb, 1);
+
+		/*	WORKAROUND for artf45032 ROM driver BUG:
+				Due to a race condition there is the chance that a second NAK event will
+				occur before the default endpoint0 handler has completed its preparation
+				of the DMA engine for the first NAK event. This can cause certain fields
+				in the DMA descriptors to be in an invalid state when the USB controller
+				reads them, thereby causing a hang.
+		 */
+		pCtrl = (USB_CORE_CTRL_T *) g_hUsb;	/* convert the handle to control structure */
+		g_Ep0BaseHdlr = pCtrl->ep_event_hdlr[0];/* retrieve the default EP0_OUT handler */
+		pCtrl->ep_event_hdlr[0] = EP0_patch;/* set our patch routine as EP0_OUT handler */
+
+		/* Init VCOM interface */
+		ret = vcom_init(g_hUsb, &desc, &usb_param);
+		if (ret == LPC_OK) {
+			/*  enable USB interrupts */
+			NVIC_EnableIRQ(LPC_USB_IRQ);
+			/* now connect */
+			USBD_API->hw->Connect(g_hUsb, 1);
+		}
+
 	}
 
-}
+	sample_num = 0;
 
-DEBUGSTR("USB CDC class based virtual Comm port example!\r\n");
+	SIT_Pin_Setup();
 
-//Chip_SCU_PinMuxSet(debugging_pin, SCU_MODE_FUNC4);
-//Chip_SCU_PinMuxSet(2,2, SCU_MODE_FUNC4);
-//
-//Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, debugging_pin); // P2_2
-
-SIT_Pin_Setup();
-
-	start_conversion();
-	fast_delay(10);
-	finish_conversion();
+//	start_conversion();
+//	fast_delay(10);
+//	finish_conversion();
 
 	while (1) {
 		if (vcom_connected() != 0) {
-//			fast_delay(1000000/9);
-			read_accel();
 			start_conversion();
-			vcom_write(accel_readings, (NUM_ACCEL+1)*4);
-			fast_delay(10000);
-
+			fast_delay(10);
 			finish_conversion();
+			fast_delay(1000);
+
+			read_accel();
+			vcom_write(accel_readings, (NUM_ACCEL+1)*4);
 		}
 	}
 
