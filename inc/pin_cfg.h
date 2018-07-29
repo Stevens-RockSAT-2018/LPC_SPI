@@ -34,10 +34,11 @@ void set_chip_select(int accel, bool state) {
 		Chip_GPIO_SetPinState(LPC_GPIO_PORT, PIN_CS4, state);
 		break;
 	case 5:
-		Chip_GPIO_SetPinState(LPC_GPIO_PORT, PIN_CS5, state);
+//		Chip_GPIO_SetPinState(LPC_GPIO_PORT, PIN_CS5, state);
 		break;
 	case 6:
 		Chip_GPIO_SetPinState(LPC_GPIO_PORT, PIN_CS6, state);
+		break;
 	}
 }
 

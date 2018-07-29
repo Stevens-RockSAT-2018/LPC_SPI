@@ -96,7 +96,7 @@
 #define TICKRATE_HZ (1000) /* 1000000 ticks per second */
 
 #define NUM_ACCEL 5
-static uint32_t accel_readings[NUM_ACCEL+1]; // zeroth element is timestamp
+static uint32_t accel_readings[NUM_ACCEL+2]; // zeroth element is timestamp
 
 
 /** USB THINGS **/
@@ -298,7 +298,7 @@ uint32_t ADC_read(uint8_t cs_pin_sel){
 	Tx_Buf[2] = 0;
 	Tx_Buf[3] = 0;
 
-
+	set_chip_select(cs_pin_sel, false);
 
 	uint32_t error = Chip_SSP_RWFrames_Blocking(LPC_SSP, &xf_setup);
 
@@ -315,7 +315,8 @@ void ADC_setup(uint8_t cs_pin_sel){
 		xf_setup.rx_cnt = xf_setup.tx_cnt = 0;
 		set_chip_select(cs_pin_sel, false);
 		Tx_Buf[0] = CONV_FLAG | CH_SEL_FLAG | SCAN_MODE_0_N;
-		Tx_Buf[1] = SETUP_FLAG | CL_SEL | REF_SEL;
+//		Tx_Buf[1] = SETUP_FLAG | CL_SEL | REF_SEL;
+		Tx_Buf[1] = 0x48;
 		uint32_t error = Chip_SSP_RWFrames_Blocking(LPC_SSP, &xf_setup);
 
 		set_chip_select(cs_pin_sel, true);
@@ -333,6 +334,7 @@ void ADC_setup(uint8_t cs_pin_sel){
 
 
 void delay_ticks(uint32_t mills) {
+
 	uint32_t start = tick_ct;
 	uint32_t stop = tick_ct + mills; // fix if changing systick
 	while (tick_ct < stop) {
@@ -344,9 +346,9 @@ uint32_t sample_num = 0;
 
 void read_accel() {
 
-	start_conversion();
-	delay_ticks(100);
-	finish_conversion();
+//	start_conversion();
+//	delay_ticks(100);
+//	finish_conversion();
 //	wait_for_conversion(1);
 
 	uint32_t timestamp = tick_ct;
@@ -354,9 +356,10 @@ void read_accel() {
 	for (int i = 1; i <= NUM_ACCEL-1; i++) {
 		accel_readings[i] = ADC_read(i);
 	}
-	accel_readings[NUM_ACCEL] = 0;
+	accel_readings[NUM_ACCEL+1] = 0;
+	Chip_GPIO_SetPinState(LPC_GPIO_PORT, 5,2, true); // debug
 	sample_num++;
-
+	Chip_GPIO_SetPinState(LPC_GPIO_PORT, 5,2, false); // debug
 }
 
 enum color {BLUE, RED, GREEN};
@@ -386,7 +389,10 @@ void set_LED_color(enum color c) {
 }
 
 void finished_usb() {
-	Chip_GPIO_SetPinState(LPC_GPIO_PORT, debugging_pin, false);
+}
+
+void fast_delay(int loops) {
+	for (int i = 0; i < loops; i++);
 }
 
 
@@ -505,24 +511,19 @@ DEBUGSTR("USB CDC class based virtual Comm port example!\r\n");
 
 SIT_Pin_Setup();
 
-//while (1) {
-//	delay_ticks(500);
-//	set_LED_color(RED);
-//	delay_ticks(500);
-//	set_LED_color(GREEN);
-//	delay_ticks(500);
-//	set_LED_color(BLUE);
-//}
+	start_conversion();
+	fast_delay(10);
+	finish_conversion();
 
 	while (1) {
 		if (vcom_connected() != 0) {
-			set_LED_color(RED);
+//			fast_delay(1000000/9);
 			read_accel();
+			start_conversion();
 			vcom_write(accel_readings, (NUM_ACCEL+1)*4);
-			Chip_GPIO_SetPinState(LPC_GPIO_PORT, debugging_pin, true);
-			delay_ticks(10);
-		} else {
-			set_LED_color(BLUE);
+			fast_delay(10000);
+
+			finish_conversion();
 		}
 	}
 

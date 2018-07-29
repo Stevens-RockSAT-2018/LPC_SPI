@@ -291,6 +291,8 @@ uint32_t vcom_write(uint8_t *pBuf, uint32_t len)
 	uint32_t ret = 0;
 
 	if ( (pVcom->tx_flags & VCOM_TX_CONNECTED) && ((pVcom->tx_flags & VCOM_TX_BUSY) == 0) ) {
+//		Chip_GPIO_SetPinState(LPC_GPIO_PORT, 5,2, true);
+
 		pVcom->tx_flags |= VCOM_TX_BUSY;
 
 		/* enter critical section */
@@ -298,6 +300,8 @@ uint32_t vcom_write(uint8_t *pBuf, uint32_t len)
 		ret = USBD_API->hw->WriteEP(pVcom->hUsb, USB_CDC_IN_EP, pBuf, len);
 		/* exit critical section */
 		NVIC_EnableIRQ(LPC_USB_IRQ);
+	} else if ((pVcom->tx_flags & VCOM_TX_BUSY) != 0){
+
 	}
 
 	return ret;
