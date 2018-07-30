@@ -353,13 +353,11 @@ void read_accel() {
 
 //	uint32_t timestamp = tick_ct;
 	accel_readings[0] = sample_num;
-	for (int i = 1; i <= NUM_ACCEL-1; i++) {
+	for (int i = 1; i <= NUM_ACCEL; i++) {
 		accel_readings[i] = ADC_read(i);
 	}
 	accel_readings[NUM_ACCEL+1] = 0;
-	Chip_GPIO_SetPinState(LPC_GPIO_PORT, 5,2, true); // debug
 	sample_num++;
-	Chip_GPIO_SetPinState(LPC_GPIO_PORT, 5,2, false); // debug
 }
 
 enum color {BLUE, RED, GREEN};
@@ -500,8 +498,8 @@ int main(void)
 			start_conversion();
 			fast_delay(10);
 			finish_conversion();
-			fast_delay(1000);
-
+			fast_delay(200);
+//			delay_ticks(1);
 			read_accel();
 			vcom_write(accel_readings, (NUM_ACCEL+1)*4);
 		}

@@ -29,7 +29,7 @@ all: LPC_SPI.axf
 LPC_SPI.axf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MCU Linker'
-	arm-none-eabi-gcc -nostdlib -L"/home/jesse/Sync/RockSAT Vibe Iso/rocksat_workspace/lpc_chip_43xx/Debug" -L"/home/jesse/Sync/RockSAT Vibe Iso/rocksat_workspace/lpc_board_nxp_lpcxpresso_4337/Debug" -Xlinker -Map="LPC_SPI.map" -Xlinker --gc-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb -T "periph_ssp_Debug.ld" -o "LPC_SPI.axf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -nostdlib -L"/Users/jesse/Sync/RockSAT Vibe Iso/rocksat_workspace/lpc_chip_43xx/Debug" -L"/Users/jesse/Sync/RockSAT Vibe Iso/rocksat_workspace/lpc_board_nxp_lpcxpresso_4337/Debug" -Xlinker -Map="LPC_SPI.map" -Xlinker --gc-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb -T "periph_ssp_Debug.ld" -o "LPC_SPI.axf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build
